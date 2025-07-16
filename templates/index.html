@@ -1,0 +1,85 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>VVCE Placement Portal</title>
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+    <style>
+        .logo {
+            max-width: 270px;
+            height: auto;
+        }
+        .glow-effect {
+            box-shadow: 0 0 10px rgba(79, 70, 229, 0.5), 0 0 20px rgba(79, 70, 229, 0.3);
+            transition: box-shadow 0.3s ease-in-out;
+        }
+        .glow-effect:hover {
+            box-shadow: 0 0 15px rgba(79, 70, 229, 0.7), 0 0 30px rgba(79, 70, 229, 0.5);
+        }
+        .input-glow:focus {
+            box-shadow: 0 0 8px rgba(79, 70, 229, 0.6), 0 0 12px rgba(79, 70, 229, 0.4);
+        }
+        body {
+            background: linear-gradient(to bottom right, #e0e7ff, #c3dafe);
+        }
+        .content {
+            padding: 20px;
+        }
+        .hidden {
+            display: none;
+        }
+        .password-container {
+            position: relative;
+        }
+        .toggle-password {
+            position: absolute;
+            right: 10px;
+            top: 50%;
+            transform: translateY(-50%);
+            cursor: pointer;
+        }
+        .back-arrow {
+            display: flex;
+            align-items: center;
+            font-size: 1rem;
+            color: #4f46e5;
+            cursor: pointer;
+            margin-bottom: 1rem;
+        }
+        .back-arrow:hover {
+            text-shadow: 0 0 5px rgba(79, 70, 229, 0.7);
+        }
+    </style>
+    <link href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@700&display=swap" rel="stylesheet">
+</head>
+<body>
+    <div class="content flex items-center justify-center min-h-screen">
+        <div class="bg-white p-8 rounded-lg shadow-lg w-full max-w-2xl glow-effect">
+            <img src="{% static 'core/logo.png' %}" alt="VVCE Logo" class="logo mx-auto mb-2">
+            <h1 class="text-2xl font-bold text-center mb-1">Vidya Vardhaka College Of Engineering</h1>
+            <h2 class="text-lg text-gray-600 text-center mb-4">Welcome to Up Flow</h2>
+            
+            <!-- Login Options -->
+            <div id="options" class="flex flex-col items-center space-y-4 mb-4">
+                <button id="userLoginBtn" class="bg-indigo-600 text-white py-2 px-4 rounded-md hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 glow-effect w-48">User Login</button>
+                <button id="adminLoginBtn" class="bg-indigo-600 text-white py-2 px-4 rounded-md hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 glow-effect w-48">Admin Login</button>
+            </div>
+        </div>
+    </div>
+    <script>
+        const userLoginBtn = document.getElementById('userLoginBtn');
+        const adminLoginBtn = document.getElementById('adminLoginBtn');
+
+        userLoginBtn.addEventListener('click', () => {
+            window.location.href = "{% url 'userlogin' %}";
+        });
+
+        adminLoginBtn.addEventListener('click', () => {
+            window.location.href = "{% url 'adminlogin' %}";
+        });
+    </script>
+</body>
+</html>

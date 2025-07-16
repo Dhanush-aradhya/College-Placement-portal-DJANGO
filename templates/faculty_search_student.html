@@ -1,0 +1,145 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Search Student - Admin Portal</title>
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+    <style>
+        /* Copy relevant styles from adminportal.html or userportal.html */
+        /* Example: body, .container-gradient, .logo, messages, detail-grid, detail-item, profile-photo etc. */
+        body { background: linear-gradient(to bottom right, #e0f7fa, #b2ebf2); font-family: 'Arial', sans-serif; }
+        .container-gradient { background: linear-gradient(to bottom, #f5f7ff, #e6eaff); }
+        .glow-effect { box-shadow: 0 0 10px rgba(79, 70, 229, 0.5), 0 0 20px rgba(79, 70, 229, 0.3); transition: box-shadow 0.3s ease-in-out; }
+        .messages { list-style: none; padding: 0; margin: 0 0 1rem 0; }
+        .messages li { padding: 0.75rem 1.25rem; margin-bottom: 1rem; border: 1px solid transparent; border-radius: 0.25rem; text-align: center; }
+        .messages li.success { color: #155724; background-color: #d4edda; border-color: #c3e6cb; }
+        .messages li.error { color: #721c24; background-color: #f8d7da; border-color: #f5c6cb; }
+        .messages li.info { color: #0c5460; background-color: #d1ecf1; border-color: #bee5eb; }
+
+        .profile-photo { width: 100px; height: 100px; border-radius: 50%; object-fit: cover; border: 2px solid #cbd5e1; margin-bottom: 1rem; }
+        .detail-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 1rem; margin-top: 1.5rem; text-align: left; }
+        .detail-item { background-color: #f9fafb; padding: 0.75rem 1rem; border-radius: 0.375rem; border: 1px solid #e5e7eb; }
+        .detail-item strong { color: #4f46e5; display: block; margin-bottom: 0.25rem; font-size: 0.8rem; text-transform: uppercase; }
+        .detail-item p, .detail-item ul { margin-top: 0.25rem; }
+        .professional-links img { width: 48px; height: 48px; margin-right: 12px; vertical-align: middle; }
+        .certifications-list { white-space: pre-wrap; }
+    </style>
+</head>
+<body class="bg-gray-100 p-4">
+    <div class="container mx-auto p-6 rounded-lg shadow-lg glow-effect container-gradient max-w-4xl">
+        <div class="flex justify-between items-center mb-6">
+            <div>
+                <h1 class="text-2xl font-bold text-gray-800">Search Student Profile</h1>
+            </div>
+            <div>
+                <a href="{% url 'adminportal' %}" class="text-sm text-indigo-600 hover:text-indigo-800 hover:underline">Back to Admin Portal</a>
+            </div>
+        </div>
+
+        {% if messages %}
+            <ul class="messages mb-4">
+                {% for message in messages %}
+                    <li class="{{ message.tags }}">{{ message }}</li>
+                {% endfor %}
+            </ul>
+        {% endif %}
+
+        <form method="GET" action="{% url 'faculty_search_student' %}" class="mb-6">
+            <div class="flex items-center space-x-2">
+                <input type="text" name="usn_query" value="{{ usn_query|default:'' }}" placeholder="Enter Student USN" class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm" required>
+                <button type="submit" class="py-2 px-4 bg-indigo-600 text-white rounded-md hover:bg-indigo-700">Search</button>
+            </div>
+        </form>
+
+        {% if student_profile %}
+            <hr class="my-6">
+            <h2 class="text-xl font-semibold text-gray-700 mb-4">Profile Details Of {{ student_profile.full_name }} ({{ student_profile.usn }})</h2>
+            
+            <div class="text-center mb-4">
+                {% if student_profile.photo %}
+                    <img src="{{ student_profile.photo.url }}" alt="Profile Photo of {{ student_profile.full_name }}" class="profile-photo mx-auto">
+                {% else %}
+                    <img src="{% static 'core/default_avatar.png' %}" alt="Default Avatar" class="profile-photo mx-auto">
+                {% endif %}
+            </div>
+
+            <div class="detail-grid">
+                {# --- REPLICATE OR INCLUDE THE DETAIL DISPLAY FROM userportal.html --- #}
+                {# Personal & Contact Info #}
+                <div class="detail-item"><strong>Full Name:</strong> <p>{{ student_profile.full_name|default:"N/A" }}</p></div>
+                <div class="detail-item"><strong>USN:</strong> <p>{{ student_profile.usn|default:"N/A" }}</p></div>
+                <div class="detail-item"><strong>College Email:</strong> <p>{{ student_profile.college_email|default:"N/A" }}</p></div>
+                <div class="detail-item"><strong>Personal Email:</strong> <p>{{ student_profile.personal_email|default:"N/A" }}</p></div>
+                <div class="detail-item"><strong>Phone:</strong> <p>{{ student_profile.phone_number|default:"N/A" }}</p></div>
+                
+                {# Academic Info #}
+                <div class="detail-item"><strong>Department:</strong> <p>{{ student_profile.get_department_display|default:"N/A" }}</p></div>
+                <div class="detail-item"><strong>Year:</strong> <p>{{ student_profile.get_current_year_display|default:"N/A" }}</p></div>
+                <div class="detail-item"><strong>Semester:</strong> <p>{{ student_profile.get_current_semester_display|default:"N/A" }}</p></div>
+                <div class="detail-item"><strong>Batch:</strong> <p>{{ student_profile.get_batch_display|default:"N/A" }}</p></div>
+                <div class="detail-item"><strong>10th Percentage:</strong> <p>{{ student_profile.tenth_percentage|default:"N/A" }}{% if student_profile.tenth_percentage %}%{% endif %}</p></div>
+                <div class="detail-item">
+                    <strong>12th/Diploma:</strong>
+                    <p>
+                        {{ student_profile.get_pre_university_qualification_type_display|default:"N/A" }}
+                        {% if student_profile.pre_university_percentage %}
+                             - {{ student_profile.pre_university_percentage }}%
+                        {% endif %}
+                    </p>
+                </div>
+                <div class="detail-item"><strong>Degree CGPA:</strong> <p>{{ student_profile.cgpa|default:"N/A" }}</p></div>
+                <div class="detail-item"><strong>Backlogs:</strong> <p>{{ student_profile.backlogs|default:"0" }}</p></div>
+
+                {# Skills & Interests #}
+                <div class="detail-item">
+                    <strong>Languages Known:</strong>
+                    {% if student_profile.languages_known.all %}
+                        <ul class="list-disc list-inside ml-1">{% for lang in student_profile.languages_known.all %}<li>{{ lang.name }}</li>{% endfor %}</ul>
+                    {% else %}<p>N/A</p>{% endif %}
+                </div>
+                <div class="detail-item">
+                    <strong>Domains of Interest:</strong>
+                    {% if student_profile.domains.all %}
+                        <ul class="list-disc list-inside ml-1">{% for domain in student_profile.domains.all %}<li>{{ domain.name }}</li>{% endfor %}</ul>
+                    {% else %}<p>N/A</p>{% endif %}
+                </div>
+
+                {# Professional Links - Using images as links #}
+                <div class="detail-item col-span-full professional-links">
+                    <strong>Professional Profiles:</strong>
+                    <p class="mt-2 flex flex-wrap gap-x-4 gap-y-2 items-center">
+                        {% if student_profile.linkedin_url %}<a href="{{ student_profile.linkedin_url }}" target="_blank" rel="noopener noreferrer" title="LinkedIn"><img src="{% static 'core/LIN.png' %}" alt="LinkedIn"></a>{% endif %}
+                        {% if student_profile.github_url %}<a href="{{ student_profile.github_url }}" target="_blank" rel="noopener noreferrer" title="GitHub"><img src="{% static 'core/GIT.png' %}" alt="GitHub"></a>{% endif %}
+                        {% if student_profile.leetcode_url %}<a href="{{ student_profile.leetcode_url }}" target="_blank" rel="noopener noreferrer" title="LeetCode"><img src="{% static 'core/LTC.png' %}" alt="LeetCode"></a>{% endif %}
+                        {% if student_profile.hackerrank_url %}<a href="{{ student_profile.hackerrank_url }}" target="_blank" rel="noopener noreferrer" title="HackerRank"><img src="{% static 'core/HR.png' %}" alt="HackerRank"></a>{% endif %}
+                        {% if not student_profile.linkedin_url and not student_profile.github_url and not student_profile.leetcode_url and not student_profile.hackerrank_url %} N/A {% endif %}
+                    </p>
+                </div>
+                
+                {# Certifications #}
+                <div class="detail-item col-span-full">
+                    <strong>Certifications/Achievements List:</strong>
+                    {% if student_profile.certifications_list %}<p class="certifications-list">{{ student_profile.certifications_list|linebreaksbr }}</p>{% else %}<p>N/A</p>{% endif %}
+                </div>
+                <div class="detail-item col-span-full">
+                    <strong>Certificates Drive Link:</strong>
+                    {% if student_profile.certifications_drive_link %}<p><a href="{{ student_profile.certifications_drive_link }}" target="_blank" rel="noopener noreferrer" class="text-indigo-600 hover:underline">View Certificates Drive</a></p>{% else %}<p>N/A</p>{% endif %}
+                </div>
+                
+                {# Resume #}
+                {% if student_profile.resume and student_profile.resume.url %}
+                    <div class="detail-item col-span-full text-center">
+                       <a href="{{ student_profile.resume.url }}" class="inline-block bg-green-500 text-white py-2 px-4 rounded-md hover:bg-green-600" download>Download Resume</a>
+                    </div>
+                {% else %}
+                    <div class="detail-item col-span-full text-center"><strong>Resume:</strong> Not Uploaded</div>
+                {% endif %}
+            </div>
+        {% elif usn_query %} {# Executed only if a search was made but no profile found (covered by messages too) #}
+            <p class="text-center text-red-600 my-8">No student profile found for USN: {{ usn_query }}</p>
+        {% endif %}
+    </div>
+</body>
+</html>

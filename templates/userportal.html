@@ -1,0 +1,210 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>VVCE Placement Portal - User Portal</title>
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+    <style>
+        /* --- PASTE YOUR FULL EXISTING CSS FROM userportal.html HERE --- */
+        /* Minimal example styles (you have more comprehensive ones) */
+        .logo { max-width: 140px; height: auto; }
+        .support-text { font-family: 'Dancing Script', cursive; font-size: 1.2rem; color: #4f46e5; text-shadow: 0 0 10px rgba(79, 70, 229, 0.8), 0 0 20px rgba(79, 70, 229, 0.5); text-align: center; margin: 10px 0; }
+        body { background: linear-gradient(to bottom right, #e0e7ff, #c3dafe); }
+        .sidebar { position: fixed; top: 0; left: 0; height: 100%; width: 210px; background: #ffffff; display: flex; flex-direction: column; align-items: center; justify-content: center; box-shadow: 2px 0 5px rgba(0, 0, 0, 0.1); padding-top: 1rem; padding-bottom: 1rem; }
+        .sidebar img.logo:first-child { max-width: 180px; margin-bottom: 0.5rem; }
+        .sidebar img.logo:last-child { margin-top: 0.5rem; }
+        .content { margin-left: 210px; padding: 20px; display: flex; align-items: center; justify-content: center; min-height: 100vh; }
+        .glow-effect { box-shadow: 0 0 10px rgba(79, 70, 229, 0.5), 0 0 20px rgba(79, 70, 229, 0.3); transition: box-shadow 0.3s ease-in-out; }
+        .messages { list-style: none; padding: 0; margin: 0 0 1rem 0; }
+        .messages li { padding: 0.75rem 1.25rem; margin-bottom: 1rem; border: 1px solid transparent; border-radius: 0.25rem; text-align: center; }
+        .messages li.success { color: #155724; background-color: #d4edda; border-color: #c3e6cb; }
+        .messages li.info { color: #0c5460; background-color: #d1ecf1; border-color: #bee5eb; }
+        .messages li.error { color: #721c24; background-color: #f8d7da; border-color: #f5c6cb; }
+        .profile-photo { width: 120px; height: 120px; border-radius: 50%; object-fit: cover; border: 3px solid #cbd5e1; margin-bottom: 1rem; }
+        .detail-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 1rem; margin-top: 1.5rem; text-align: left; }
+        .detail-item { background-color: #f9fafb; padding: 0.75rem 1rem; border-radius: 0.375rem; border: 1px solid #e5e7eb; }
+        .detail-item strong { color: #4f46e5; display: block; margin-bottom: 0.25rem; font-size: 0.8rem; text-transform: uppercase; }
+        .detail-item p, .detail-item ul { margin-top: 0.25rem; }
+        .professional-links img { width: 48px; height: 48px; margin-right: 12px; vertical-align: middle; }
+        .certifications-list { white-space: pre-wrap; /* To respect newlines in the TextField */ }
+        /* --- END OF YOUR CSS --- */
+    </style>
+    <link href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@700&display=swap" rel="stylesheet">
+</head>
+<body>
+    <div class="sidebar">
+        <img src="{% static 'core/logo.png' %}" alt="Support Logo" class="logo">
+        <div class="support-text">In Support Of</div>
+        <img src="{% static 'core/vvce.png' %}" alt="VVCE Logo" class="logo">
+    </div>
+    <div class="content">
+        <div class="bg-white p-8 rounded-lg shadow-lg w-full max-w-4xl glow-effect"> {# Increased max-width for more details #}
+            <h1 class="text-2xl font-bold text-center mb-2">Vidya Vardhaka College Of Engineering</h1>
+            <h2 class="text-lg text-gray-600 text-center mb-6">User Portal</h2>
+
+            {% if messages %}
+                <ul class="messages mb-4">
+                    {% for message in messages %}
+                        <li class="{{ message.tags }}">{{ message }}</li>
+                    {% endfor %}
+                </ul>
+            {% endif %}
+
+            <div class="text-center mb-6">
+                <p class="text-gray-800 text-xl">Welcome, <strong class="text-indigo-600">{{ request.user.get_full_name|default:request.user.username }}</strong>!</p>
+            </div>
+
+            {% if student_profile %}
+                <div class="text-center">
+                    {% if student_profile.photo %}
+                        <img src="{{ student_profile.photo.url }}" alt="Profile Photo" class="profile-photo mx-auto">
+                    {% else %}
+                        <img src="{% static 'core/default_avatar.png' %}" alt="Default Avatar" class="profile-photo mx-auto">
+                    {% endif %}
+                </div>
+
+                <div class="detail-grid">
+                    <div class="detail-item"><strong>USN:</strong> <p>{{ student_profile.usn|default:"N/A" }}</p></div>
+                    <div class="detail-item"><strong>Full Name:</strong> <p>{{ student_profile.full_name|default:"N/A" }}</p></div>
+                    <div class="detail-item"><strong>College Email:</strong> <p>{{ student_profile.college_email|default:"N/A" }}</p></div>
+                    <div class="detail-item"><strong>Personal Email:</strong> <p>{{ student_profile.personal_email|default:"N/A" }}</p></div>
+                    <div class="detail-item"><strong>Phone:</strong> <p>{{ student_profile.phone_number|default:"N/A" }}</p></div>
+                    <div class="detail-item"><strong>Department:</strong> <p>{{ student_profile.get_department_display|default:"N/A" }}</p></div>
+                    <div class="detail-item"><strong>Year:</strong> <p>{{ student_profile.get_current_year_display|default:"N/A" }}</p></div>
+                    <div class="detail-item"><strong>Semester:</strong> <p>{{ student_profile.get_current_semester_display|default:"N/A" }}</p></div>
+                    
+                    <div class="detail-item"><strong>10th Percentage:</strong> <p>{{ student_profile.tenth_percentage|default:"N/A" }}%</p></div>
+                    <div class="detail-item">
+                        <strong>12th/Diploma:</strong>
+                        <p>
+                            {{ student_profile.get_pre_university_qualification_type_display|default:"N/A" }}
+                            {% if student_profile.pre_university_percentage %}
+                                - {{ student_profile.pre_university_percentage }}%
+                            {% endif %}
+                        </p>
+                    </div>
+                    <div class="detail-item"><strong>Degree CGPA:</strong> <p>{{ student_profile.cgpa|default:"N/A" }}</p></div>
+                    <div class="detail-item"><strong>Backlogs:</strong> <p>{{ student_profile.backlogs|default:"0" }}</p></div>
+                    <div class="detail-item"><strong>Batch:</strong> <p>{{ student_profile.get_batch_display|default:"N/A" }}</p></div>
+
+                    <div class="detail-item">
+                        <strong>Languages Known:</strong>
+                        {% if student_profile.languages_known.all %}
+                            <ul class="list-disc list-inside ml-1">
+                                {% for lang in student_profile.languages_known.all %}
+                                    <li>{{ lang.name }}</li>
+                                {% endfor %}
+                            </ul>
+                        {% else %}
+                            <p>N/A</p>
+                        {% endif %}
+                    </div>
+                    <div class="detail-item">
+                        <strong>Domains of Interest:</strong>
+                        {% if student_profile.domains.all %}
+                            <ul class="list-disc list-inside ml-1">
+                                {% for domain in student_profile.domains.all %}
+                                    <li>{{ domain.name }}</li>
+                                {% endfor %}
+                            </ul>
+                        {% else %}
+                            <p>N/A</p>
+                        {% endif %}
+                    </div>
+
+                    <div class="detail-item col-span-full professional-links"> {# Professional Links Section #}
+                        <strong>Professional Profiles:</strong>
+                        <p class="mt-2 flex flex-wrap gap-4 items-center">
+                            {% if student_profile.linkedin_url %}
+                                <a href="{{ student_profile.linkedin_url }}" target="_blank" rel="noopener noreferrer" title="LinkedIn Profile">
+                                    <img src="{% static 'core/LIN.png' %}" alt="LinkedIn">
+                                </a>
+                            {% endif %}
+                            {% if student_profile.github_url %}
+                                <a href="{{ student_profile.github_url }}" target="_blank" rel="noopener noreferrer" title="GitHub Profile">
+                                    <img src="{% static 'core/GIT.png' %}" alt="GitHub">
+                                </a>
+                            {% endif %}
+                            {% if student_profile.leetcode_url %}
+                                <a href="{{ student_profile.leetcode_url }}" target="_blank" rel="noopener noreferrer" title="LeetCode Profile">
+                                    <img src="{% static 'core/LTC.png' %}" alt="LeetCode">
+                                    
+                                </a>
+                            {% endif %}
+                            {% if student_profile.hackerrank_url %}
+                                <a href="{{ student_profile.hackerrank_url }}" target="_blank" rel="noopener noreferrer" title="HackerRank Profile">
+                                    <img src="{% static 'core/HR.png' %}" alt="HackerRank">
+                                </a>
+                            {% endif %}
+                            {% if not student_profile.linkedin_url and not student_profile.github_url and not student_profile.leetcode_url and not student_profile.hackerrank_url %}
+                                N/A
+                            {% endif %}
+                        </p>
+                    </div>
+                    
+                    <div class="detail-item col-span-full">
+                        <strong>Certifications/Achievements List:</strong>
+                        {% if student_profile.certifications_list %}
+                            <p class="certifications-list">{{ student_profile.certifications_list }}</p>
+                        {% else %}
+                            <p>N/A</p>
+                        {% endif %}
+                    </div>
+
+                    <div class="detail-item col-span-full">
+                        <strong>Certificates Drive Link:</strong>
+                        {% if student_profile.certifications_drive_link %}
+                            <p><a href="{{ student_profile.certifications_drive_link }}" target="_blank" rel="noopener noreferrer" class="text-indigo-600 hover:underline">View Certificates</a></p>
+                        {% else %}
+                            <p>N/A</p>
+                        {% endif %}
+                    </div>
+                    
+                    {% if student_profile.resume %}
+                        <div class="detail-item col-span-full text-center">
+                           <a href="{{ student_profile.resume.url }}" class="inline-block bg-green-500 text-white py-2 px-4 rounded-md hover:bg-green-600" download>
+                                Download Resume
+                           </a>
+                        </div>
+                    {% else %}
+                        <div class="detail-item col-span-full text-center"><strong>Resume:</strong> Not Uploaded</div>
+                    {% endif %}
+                </div>
+            {% else %}
+                <p class="text-center text-gray-700 my-8">
+                    Your profile information is not yet complete.
+                </p>
+            {% endif %}
+
+            <div id="options" class="flex flex-col sm:flex-row justify-center items-center space-y-4 sm:space-y-0 sm:space-x-4 mt-8 mb-6">
+                 <button id="manageProfileBtn" class="bg-indigo-600 text-white py-2 px-6 rounded-md hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 glow-effect w-full sm:w-auto">
+                    {% if student_profile %}Update Profile Details{% else %}Upload Profile Details{% endif %}
+                </button>
+                <button id="showPasswordFormBtn" class="bg-gray-600 text-white py-2 px-6 rounded-md hover:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-500 glow-effect w-full sm:w-auto">Update Password</button>
+            </div>
+
+            <div class="text-center">
+                <a href="{% url 'logout' %}" class="bg-red-500 text-white py-2 px-6 rounded-md hover:bg-red-600 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-500 glow-effect">Logout</a>
+            </div>
+        </div>
+    </div>
+    <script>
+        // ... (Your existing JavaScript for manageProfileBtn and showPasswordFormBtn) ...
+        const manageProfileBtn = document.getElementById('manageProfileBtn');
+        const showPasswordFormBtn = document.getElementById('showPasswordFormBtn');
+
+        if(manageProfileBtn) {
+            manageProfileBtn.addEventListener('click', () => {
+                window.location.href = "{% url 'upload_details' %}";
+            });
+        }
+        if(showPasswordFormBtn) {
+            showPasswordFormBtn.addEventListener('click', () => {
+                window.location.href = "{% url 'update_password' %}";
+            });
+        }
+    </script>
+</body>
+</html>

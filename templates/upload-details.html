@@ -1,0 +1,191 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>VVCE Placement Portal - {% if form.instance.pk %}Update{% else %}Upload{% endif %} Details</title>
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
+    <style>
+        /* --- PASTE YOUR FULL EXISTING CSS HERE --- */
+        /* Minimal example styles (you have more comprehensive ones) */
+        .logo { max-width: 140px; height: auto; }
+        .top-logo { max-width: 200px; height: auto; }
+        .glow-effect { box-shadow: 0 0 10px rgba(79, 70, 229, 0.5), 0 0 20px rgba(79, 70, 229, 0.3); transition: box-shadow 0.3s ease-in-out; }
+        .input-glow:focus { box-shadow: 0 0 8px rgba(79, 70, 229, 0.6), 0 0 12px rgba(79, 70, 229, 0.4); }
+        .support-text { font-family: 'Dancing Script', cursive; font-size: 1.2rem; color: #4f46e5; text-shadow: 0 0 10px rgba(79, 70, 229, 0.8), 0 0 20px rgba(79, 70, 229, 0.5); text-align: center; margin: 10px 0; }
+        body { background: linear-gradient(to bottom right, #e0e7ff, #c3dafe); }
+        .sidebar { position: fixed; top: 0; left: 0; height: 100%; width: 210px; background: #ffffff; display: flex; flex-direction: column; align-items: center; justify-content: center; box-shadow: 2px 0 5px rgba(0, 0, 0, 0.1); }
+        .content { margin-left: 210px; padding: 20px; display: flex; align-items: center; justify-content: center; min-height:screen; }
+        .back-arrow { display: flex; align-items: center; font-size: 1rem; color: #4f46e5; cursor: pointer; margin-bottom: 1rem; }
+        .back-arrow:hover { text-shadow: 0 0 5px rgba(79, 70, 229, 0.7); }
+        .select2-container--default .select2-selection--multiple { border: 1px solid #d1d5db; border-radius: 0.375rem; }
+        .select2-container--default .select2-selection--multiple .select2-selection__choice { background-color: #4f46e5; border-color: #4338ca; color: white; }
+        .select2-container--default .select2-selection--multiple .select2-selection__choice__remove { color: white; }
+        .form-field-container { margin-bottom: 1rem; }
+        .form-field-container label { display: block; text-sm font-medium text-gray-700 mb-1;}
+        .form-field-container input[type="text"],
+        .form-field-container input[type="email"],
+        .form-field-container input[type="tel"],
+        .form-field-container input[type="number"],
+        /* .form-field-container input[type="file"], */ /* General styling for file handled by {{ field }} now */
+        .form-field-container select,
+        .form-field-container textarea {
+            margin-top: 0.25rem; display: block; width: 100%;
+            padding-left: 0.75rem; padding-right: 0.75rem; padding-top: 0.5rem; padding-bottom: 0.5rem;
+            border-width: 1px; border-color: #d1d5db; border-radius: 0.375rem;
+            box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
+        }
+        .form-field-container input:focus,
+        .form-field-container select:focus,
+        .form-field-container textarea:focus {
+             outline: 2px solid transparent; outline-offset: 2px;
+             --tw-ring-color: #6366f1; border-color: #6366f1;
+             box-shadow: 0 0 0 1px var(--tw-ring-color), 0 1px 2px 0 rgba(0,0,0,0.05);
+        }
+        .form-field-container input[type="file"] { /* Basic styling for the file input rendered by Django */
+             margin-top: 0.25rem; display: block; width: 100%;
+             /* Specific styling for file inputs might be needed if browser defaults are not desired */
+        }
+        .errorlist { list-style-type: none; padding: 0; margin: 0.5rem 0 0 0; color: #ef4444; font-size: 0.875rem; }
+        .helptext { font-size: 0.75rem; color: #6b7280; margin-top: 0.25rem; }
+        .messages { list-style: none; padding: 0; margin: 0 0 1rem 0; }
+        .messages li { padding: 0.75rem 1.25rem; margin-bottom: 1rem; border: 1px solid transparent; border-radius: 0.25rem; text-align: center; }
+        .messages li.success { color: #155724; background-color: #d4edda; border-color: #c3e6cb; }
+        .messages li.error { color: #721c24; background-color: #f8d7da; border-color: #f5c6cb; }
+        .messages li.info { color: #0c5460; background-color: #d1ecf1; border-color: #bee5eb; }
+        /* --- END OF YOUR CSS --- */
+    </style>
+    <link href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@700&display=swap" rel="stylesheet">
+</head>
+<body>
+    <div class="sidebar">
+        <img src="{% static 'core/logo.png' %}" alt="Support Logo" class="top-logo mt-4">
+        <div class="support-text">In Support Of</div>
+        <img src="{% static 'core/vvce.png' %}" alt="VVCE Logo" class="logo mb-4">
+    </div>
+    <div class="content">
+        <div class="bg-white p-8 rounded-lg shadow-lg w-full max-w-2xl glow-effect">
+            <h1 class="text-2xl font-bold text-center mb-2">Vidya Vardhaka College Of Engineering</h1>
+            <h2 class="text-lg text-gray-600 text-center mb-6">
+                {% if form.instance.pk %}Update Your Details{% else %}Upload Your Details{% endif %}
+            </h2>
+
+            {% if messages %}
+                <ul class="messages">
+                    {% for message in messages %}
+                        <li class="{{ message.tags }}">{{ message }}</li>
+                    {% endfor %}
+                </ul>
+            {% endif %}
+
+            <form method="POST" action="{% url 'upload_details' %}" enctype="multipart/form-data" id="profileForm">
+                {% csrf_token %}
+                <div class="back-arrow" onclick="window.location.href='{% url 'userportal' %}'">
+                    <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"></path>
+                    </svg>
+                    Back to Portal
+                </div>
+
+                {% if form.non_field_errors %}
+                    <div class="mb-4 p-3 bg-red-100 border border-red-400 text-red-700 rounded">
+                        <ul class="errorlist">
+                            {% for error in form.non_field_errors %}<li>{{ error }}</li>{% endfor %}
+                        </ul>
+                    </div>
+                {% endif %}
+
+                {# Special handling for USN field #}
+                <div class="form-field-container">
+                    <label for="{{ form.usn.id_for_label }}">{{ form.usn.label }}
+                        {% if form.usn.field.required %}<span class="text-red-500">*</span>{% endif %}
+                    </label>
+                    {% if usn_is_readonly %}
+                        <input type="text" value="{{ current_usn }}" class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm bg-gray-100 cursor-not-allowed" readonly>
+                        {% if form.usn.html_name %}<input type="hidden" name="{{ form.usn.html_name }}" value="{{ current_usn }}">{% endif %}
+                    {% else %}
+                        {{ form.usn }}
+                    {% endif %}
+                    {% if form.usn.help_text %}<p class="helptext">{{ form.usn.help_text|safe }}</p>{% endif %}
+                    {% if form.usn.errors %}<ul class="errorlist">{% for error in form.usn.errors %}<li>{{ error }}</li>{% endfor %}</ul>{% endif %}
+                </div>
+
+                {# Loop through other fields #}
+                {% for field in form %}
+                    {% if field.name != 'usn' %}
+                        <div class="form-field-container">
+                            <label for="{{ field.id_for_label }}">{{ field.label }}
+                                {% if field.field.required %}<span class="text-red-500">*</span>{% endif %}
+                            </label>
+                            {{ field }} {# Renders the widget. For SelectMultiple, Select2 will enhance it. #}
+                            {% if field.help_text %}<p class="helptext mt-1">{{ field.help_text|safe }}</p>{% endif %}
+                            {% if field.errors %}<ul class="errorlist">{% for error in field.errors %}<li>{{ error }}</li>{% endfor %}</ul>{% endif %}
+                        </div>
+                    {% endif %}
+                {% endfor %}
+
+                <button type="submit" id="uploadDetailsBtn" class="mt-6 w-full bg-indigo-600 text-white py-2 px-4 rounded-md hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 glow-effect">
+                    {% if form.instance.pk %}Update Details{% else %}Upload Details{% endif %}
+                </button>
+            </form>
+        </div>
+    </div>
+
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
+    <script>
+        $(document).ready(function() {
+            // Initialize Select2 for the 'domains' field
+            $('#id_domains').select2({ // Default ID for 'domains' field
+                placeholder: "Select up to 4 domains",
+                allowClear: true,
+                maximumSelectionLength: 4
+            });
+
+            // Initialize Select2 for the new 'languages_known' field
+            $('#id_languages_known').select2({ // Default ID for 'languages_known' field
+                placeholder: "Select languages known (optional)",
+                allowClear: true
+                // You can add maximumSelectionLength here too if desired
+            });
+
+            // Client-side file validation (keep this)
+            const profileForm = document.getElementById('profileForm');
+            const uploadDetailsBtn = document.getElementById('uploadDetailsBtn');
+            if (profileForm) {
+                profileForm.addEventListener('submit', function(e) {
+                    const photoInput = document.getElementById('{{ form.photo.id_for_label|default:"id_photo" }}');
+                    const resumeInput = document.getElementById('{{ form.resume.id_for_label|default:"id_resume" }}');
+
+                    if(uploadDetailsBtn) {
+                        uploadDetailsBtn.disabled = true;
+                        uploadDetailsBtn.textContent = 'Processing...';
+                    }
+
+                    if (photoInput && photoInput.files.length > 0 && photoInput.files[0].size > 200 * 1024) { // Your photo limit
+                        e.preventDefault();
+                        alert('Photo size must be less than 200KB.'); // Your limit
+                        if(uploadDetailsBtn) {
+                            uploadDetailsBtn.disabled = false;
+                            uploadDetailsBtn.textContent = '{% if form.instance.pk %}Update Details{% else %}Upload Details{% endif %}';
+                        }
+                        return;
+                    }
+
+                    if (resumeInput && resumeInput.files.length > 0 && resumeInput.files[0].size > 1000 * 1024) { // Your resume limit
+                        e.preventDefault();
+                        alert('Resume size must be less than 1MB.'); // Your limit
+                        if(uploadDetailsBtn) {
+                            uploadDetailsBtn.disabled = false;
+                            uploadDetailsBtn.textContent = '{% if form.instance.pk %}Update Details{% else %}Upload Details{% endif %}';
+                        }
+                        return;
+                    }
+                });
+            }
+        });
+    </script>
+</body>
+</html>

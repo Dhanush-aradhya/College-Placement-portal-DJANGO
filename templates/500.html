@@ -1,0 +1,25 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Server Error - Placement Portal</title>
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+    <style>
+        body { display: flex; justify-content: center; align-items: center; min-height: 100vh; background-color: #f3f4f6; text-align: center; font-family: sans-serif;}
+        .container { background-color: white; padding: 2rem 3rem; border-radius: 0.5rem; box-shadow: 0 4px 6px rgba(0,0,0,0.1); }
+        h1 { font-size: 2rem; color: #b91c1c; margin-bottom: 1rem; } /* text-red-700 */
+        p { margin-bottom: 1.5rem; color: #4b5563; }
+        a { color: #4f46e5; text-decoration: underline; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Oops! Something Went Wrong (Error 500)</h1>
+        <p>We're sorry, but our server encountered an internal error and was unable to complete your request.</p>
+        <p>Our technical team has been notified. Please try again later or contact support if the problem persists.</p>
+        <p><a href="{% url 'home' %}">Go to Homepage</a></p>
+    </div>
+</body>
+</html>
