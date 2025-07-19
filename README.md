@@ -22,8 +22,8 @@ A Django-based placement management system for educational institutions.
 
 1. Clone the repository:
 ```bash
-git clone https://github.com/Dhanush-aradhya/College-Placement-Portal.git
-cd College-Placement-Portal
+git clone https://github.com/Dhanush-aradhya/College-Placement-Portal-DJANGO.git
+cd College-Placement-Portal-DJANGO
 ```
 
 2. Create and activate virtual environment:
