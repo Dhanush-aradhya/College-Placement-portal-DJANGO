@@ -2,7 +2,7 @@
 
 A Django-based placement management system for educational institutions.
 
-## Features
+# Features
 
 - Student profile management
 - Domain and skill tracking
