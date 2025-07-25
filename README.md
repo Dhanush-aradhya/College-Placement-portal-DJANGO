@@ -14,7 +14,7 @@ A Django-based placement management system for educational institutions.
 ## Setup Instructions
 
 ### Prerequisites
-- Python 3.8+
+- Python 3.8
 - PostgreSQL
 - Virtual environment (recommended)
 
