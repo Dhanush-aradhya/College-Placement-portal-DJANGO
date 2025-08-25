@@ -62,7 +62,7 @@ graph TD
 
 ```mermaid
 graph TD
-    Start([Student Accesses System]) --> Login[🔐 Student Login<br/>Username: USN<br/>Password: Default/Changed]
+    Start([Student Accesses System]) --> Login[🔐 Student Login<br/>Username USN<br/>Password Default or Changed]
     
     Login --> Auth{Authentication<br/>Check}
     Auth -->|Success| Portal[📚 Student Portal Dashboard<br/>/userportal/]
@@ -70,7 +70,7 @@ graph TD
     LoginError --> Login
     
     Portal --> ProfileCheck{Profile<br/>Exists?}
-    ProfileCheck -->|No| NoProfile[ℹ️ Welcome Message<br/>"Please upload your details"]
+    ProfileCheck -->|No| NoProfile[ℹ️ Welcome Message<br/>Please upload your details]
     ProfileCheck -->|Yes| ShowProfile[👤 Display Complete Profile]
     
     %% Profile Actions
@@ -83,15 +83,15 @@ graph TD
     Upload --> Form[📋 Student Profile Form]
     Form --> FormSections{Form Sections}
     
-    FormSections --> Basic[👤 Basic Information<br/>• Full Name<br/>• USN (readonly)<br/>• College Email<br/>• Personal Email<br/>• Phone Number]
+    FormSections --> Basic[👤 Basic Information<br/>Full Name<br/>USN readonly<br/>College Email<br/>Personal Email<br/>Phone Number]
     
-    FormSections --> Academic[🎓 Academic Details<br/>• Department<br/>• Current Year/Semester<br/>• 10th Percentage<br/>• 12th/Diploma Type & %<br/>• CGPA<br/>• Backlogs<br/>• Batch]
+    FormSections --> Academic[🎓 Academic Details<br/>Department<br/>Current Year/Semester<br/>10th Percentage<br/>12th/Diploma Type and Percent<br/>CGPA<br/>Backlogs<br/>Batch]
     
-    FormSections --> Skills[💻 Skills & Interests<br/>• Domains (up to 4)<br/>• Programming Languages<br/>• Professional Links<br/>  - LinkedIn<br/>  - GitHub<br/>  - LeetCode<br/>  - HackerRank]
+    FormSections --> Skills[💻 Skills and Interests<br/>Domains up to 4<br/>Programming Languages<br/>Professional Links<br/>LinkedIn<br/>GitHub<br/>LeetCode<br/>HackerRank]
     
-    FormSections --> Files[📁 File Uploads<br/>• Profile Photo (max 400KB)<br/>• Resume (max 1MB)]
+    FormSections --> Files[📁 File Uploads<br/>Profile Photo max 400KB<br/>Resume max 1MB]
     
-    FormSections --> Certs[🏆 Certifications<br/>• Achievements List<br/>• Certificates Drive Link]
+    FormSections --> Certs[🏆 Certifications<br/>Achievements List<br/>Certificates Drive Link]
     
     Form --> Validate{Form<br/>Validation}
     Validate -->|Success| Save[💾 Save Profile]
@@ -102,7 +102,7 @@ graph TD
     Success --> Portal
     
     %% Password Change Flow
-    Password --> PwdForm[🔑 Password Change Form<br/>• Old Password<br/>• New Password<br/>• Confirm Password]
+    Password --> PwdForm[🔑 Password Change Form<br/>Old Password<br/>New Password<br/>Confirm Password]
     PwdForm --> PwdValidate{Password<br/>Validation}
     PwdValidate -->|Success| PwdSave[💾 Update Password]
     PwdValidate -->|Errors| PwdErrors[❌ Password Errors]
@@ -111,11 +111,11 @@ graph TD
     PwdSuccess --> Portal
     
     %% Profile Display Details
-    ShowProfile --> PersonalInfo[👤 Personal Information<br/>• Profile Photo<br/>• Name, USN, Emails<br/>• Phone, Department<br/>• Year, Semester, Batch]
+    ShowProfile --> PersonalInfo[👤 Personal Information<br/>Profile Photo<br/>Name USN Emails<br/>Phone Department<br/>Year Semester Batch]
     
-    ShowProfile --> AcademicInfo[📊 Academic Performance<br/>• 10th Percentage<br/>• 12th/Diploma Details<br/>• Current CGPA<br/>• Backlogs Count]
+    ShowProfile --> AcademicInfo[📊 Academic Performance<br/>10th Percentage<br/>12th/Diploma Details<br/>Current CGPA<br/>Backlogs Count]
     
-    ShowProfile --> SkillsInfo[💡 Skills & Domains<br/>• Selected Domains<br/>• Programming Languages<br/>• Professional Profiles<br/>• Certifications]
+    ShowProfile --> SkillsInfo[💡 Skills and Domains<br/>Selected Domains<br/>Programming Languages<br/>Professional Profiles<br/>Certifications]
     
     %% Styling
     classDef process fill:#e8f5e8,stroke:#2e7d32,stroke-width:2px
@@ -138,9 +138,9 @@ graph TD
 
 ```mermaid
 graph TD
-    Start([Faculty Accesses System]) --> Login[🔐 Faculty Login<br/>Username: Faculty ID<br/>Password: Assigned]
+    Start([Faculty Accesses System]) --> Login[🔐 Faculty Login<br/>Username Faculty ID<br/>Password Assigned]
     
-    Login --> Auth{Authentication<br/>& Staff Check}
+    Login --> Auth{Authentication<br/>and Staff Check}
     Auth -->|Success + is_staff=True| Portal[🏢 Faculty Portal Dashboard<br/>/adminportal/]
     Auth -->|Invalid Credentials| LoginError[❌ Invalid Credentials]
     Auth -->|Non-Staff User| StaffError[❌ No Staff Privileges]
@@ -158,18 +158,18 @@ graph TD
     MainFeatures --> Logout[🚪 Logout]
     
     %% View Students Detail
-    ViewStudents --> StudentList[📋 Student List Display<br/>• Profile Photos<br/>• Basic Information<br/>• Academic Details<br/>• Contact Information<br/>• Professional Links<br/>• Certificates]
+    ViewStudents --> StudentList[📋 Student List Display<br/>Profile Photos<br/>Basic Information<br/>Academic Details<br/>Contact Information<br/>Professional Links<br/>Certificates]
     
     %% Advanced Filtering System
     FilterStudents --> FilterOptions{Filter Categories}
     
-    FilterOptions --> DeptFilter[🏛️ Department Filter<br/>• CSE, ISE, AIML<br/>• ECE, EEE, ME, CE]
-    FilterOptions --> YearFilter[📅 Academic Year<br/>• 1st, 2nd, 3rd, 4th Year]
-    FilterOptions --> CGPAFilter[📈 CGPA Filter<br/>• Minimum CGPA threshold]
-    FilterOptions --> BacklogFilter[📉 Backlogs Filter<br/>• Maximum backlogs allowed]
-    FilterOptions --> DomainFilter[💻 Domain Filter<br/>• Software Development<br/>• Data Science<br/>• AI/ML, etc.]
-    FilterOptions --> LanguageFilter[🔤 Language Filter<br/>• Programming Languages]
-    FilterOptions --> PercentageFilter[📊 Percentage Filters<br/>• 10th Percentage<br/>• 12th/Diploma Percentage]
+    FilterOptions --> DeptFilter[🏛️ Department Filter<br/>CSE ISE AIML<br/>ECE EEE ME CE]
+    FilterOptions --> YearFilter[📅 Academic Year<br/>1st 2nd 3rd 4th Year]
+    FilterOptions --> CGPAFilter[📈 CGPA Filter<br/>Minimum CGPA threshold]
+    FilterOptions --> BacklogFilter[📉 Backlogs Filter<br/>Maximum backlogs allowed]
+    FilterOptions --> DomainFilter[💻 Domain Filter<br/>Software Development<br/>Data Science<br/>AI/ML etc]
+    FilterOptions --> LanguageFilter[🔤 Language Filter<br/>Programming Languages]
+    FilterOptions --> PercentageFilter[📊 Percentage Filters<br/>10th Percentage<br/>12th/Diploma Percentage]
     
     FilterOptions --> ApplyFilters[🎯 Apply Combined Filters]
     ApplyFilters --> FilteredResults[📊 Filtered Student List<br/>Real-time Results]
@@ -183,12 +183,12 @@ graph TD
     SearchError --> USNInput
     
     StudentDetail --> DetailSections{Student Information<br/>Sections}
-    DetailSections --> PersonalSection[👤 Personal Details<br/>• Photo & Basic Info<br/>• Contact Information]
-    DetailSections --> AcademicSection[🎓 Academic Records<br/>• Percentages & CGPA<br/>• Department & Batch]
-    DetailSections --> SkillSection[💡 Skills & Domains<br/>• Selected Interests<br/>• Programming Languages]
-    DetailSections --> ProfessionalSection[🔗 Professional Links<br/>• LinkedIn, GitHub<br/>• LeetCode, HackerRank]
-    DetailSections --> CertSection[🏆 Certifications<br/>• Achievement List<br/>• Certificate Links]
-    DetailSections --> FileSection[📁 Uploaded Files<br/>• Resume Download<br/>• Profile Photo]
+    DetailSections --> PersonalSection[👤 Personal Details<br/>Photo and Basic Info<br/>Contact Information]
+    DetailSections --> AcademicSection[🎓 Academic Records<br/>Percentages and CGPA<br/>Department and Batch]
+    DetailSections --> SkillSection[💡 Skills and Domains<br/>Selected Interests<br/>Programming Languages]
+    DetailSections --> ProfessionalSection[🔗 Professional Links<br/>LinkedIn GitHub<br/>LeetCode HackerRank]
+    DetailSections --> CertSection[🏆 Certifications<br/>Achievement List<br/>Certificate Links]
+    DetailSections --> FileSection[📁 Uploaded Files<br/>Resume Download<br/>Profile Photo]
     
     %% Export Functionality
     ExportData --> ExportOptions{Export Options}
@@ -199,14 +199,14 @@ graph TD
     ExportFiltered --> GenerateExcel
     
     GenerateExcel --> ExcelFeatures{Excel Features}
-    ExcelFeatures --> ExcelData[📋 Comprehensive Data<br/>• All Student Fields<br/>• Academic Performance<br/>• Contact Information]
-    ExcelFeatures --> ExcelLinks[🔗 Clickable Hyperlinks<br/>• Professional Profiles<br/>• Resume Downloads<br/>• Certificate Links]
-    ExcelFeatures --> ExcelFormatting[🎨 Professional Formatting<br/>• Headers & Styling<br/>• Auto-fit Columns]
+    ExcelFeatures --> ExcelData[📋 Comprehensive Data<br/>All Student Fields<br/>Academic Performance<br/>Contact Information]
+    ExcelFeatures --> ExcelLinks[🔗 Clickable Hyperlinks<br/>Professional Profiles<br/>Resume Downloads<br/>Certificate Links]
+    ExcelFeatures --> ExcelFormatting[🎨 Professional Formatting<br/>Headers and Styling<br/>Auto-fit Columns]
     
     ExcelFeatures --> DownloadFile[⬇️ Download Excel File<br/>Timestamped Filename]
     
     %% Password Change
-    ChangePassword --> FacultyPwdForm[🔑 Faculty Password Form<br/>• Current Password<br/>• New Password<br/>• Confirm Password]
+    ChangePassword --> FacultyPwdForm[🔑 Faculty Password Form<br/>Current Password<br/>New Password<br/>Confirm Password]
     FacultyPwdForm --> FacultyPwdValidate{Password<br/>Validation}
     FacultyPwdValidate -->|Success| FacultyPwdSave[💾 Update Password]
     FacultyPwdValidate -->|Errors| FacultyPwdError[❌ Password Errors]
@@ -257,59 +257,59 @@ graph TD
     
     %% User Management Details
     UserManagement --> UserActions{User Actions}
-    UserActions --> CreateUsers[➕ Create New Users<br/>• Students<br/>• Faculty<br/>• Superusers]
-    UserActions --> ModifyUsers[✏️ Modify Existing Users<br/>• Change Passwords<br/>• Update Permissions<br/>• Activate/Deactivate]
-    UserActions --> DeleteUsers[🗑️ Delete Users<br/>• Remove Access<br/>• Archive Accounts]
-    UserActions --> BulkOperations[📊 Bulk Operations<br/>• Mass User Creation<br/>• Bulk Permission Changes]
+    UserActions --> CreateUsers[➕ Create New Users<br/>Students<br/>Faculty<br/>Superusers]
+    UserActions --> ModifyUsers[✏️ Modify Existing Users<br/>Change Passwords<br/>Update Permissions<br/>Activate/Deactivate]
+    UserActions --> DeleteUsers[🗑️ Delete Users<br/>Remove Access<br/>Archive Accounts]
+    UserActions --> BulkOperations[📊 Bulk Operations<br/>Mass User Creation<br/>Bulk Permission Changes]
     
     %% Student Profile Management
     StudentProfiles --> ProfileActions{Profile Management}
-    ProfileActions --> ViewAllProfiles[👀 View All Profiles<br/>• Complete Student Data<br/>• Advanced Filtering<br/>• Search Capabilities]
-    ProfileActions --> EditProfiles[✏️ Edit Student Profiles<br/>• Update Information<br/>• Correct Data<br/>• Manage Files]
-    ProfileActions --> BulkProfileOps[📊 Bulk Profile Operations<br/>• Mass Updates<br/>• Data Export<br/>• Profile Analysis]
-    ProfileActions --> ProfileValidation[✅ Data Validation<br/>• Check Completeness<br/>• Verify Information<br/>• Quality Control]
+    ProfileActions --> ViewAllProfiles[👀 View All Profiles<br/>Complete Student Data<br/>Advanced Filtering<br/>Search Capabilities]
+    ProfileActions --> EditProfiles[✏️ Edit Student Profiles<br/>Update Information<br/>Correct Data<br/>Manage Files]
+    ProfileActions --> BulkProfileOps[📊 Bulk Profile Operations<br/>Mass Updates<br/>Data Export<br/>Profile Analysis]
+    ProfileActions --> ProfileValidation[✅ Data Validation<br/>Check Completeness<br/>Verify Information<br/>Quality Control]
     
     %% Domain Management
     DomainManagement --> DomainActions{Domain Actions}
-    DomainActions --> AddDomains[➕ Add New Domains<br/>• Emerging Technologies<br/>• Industry Demands]
-    DomainActions --> EditDomains[✏️ Edit Existing Domains<br/>• Update Names<br/>• Modify Descriptions]
-    DomainActions --> RemoveDomains[🗑️ Remove Obsolete Domains<br/>• Archive Old Domains<br/>• Clean Database]
-    DomainActions --> DomainAnalytics[📊 Domain Analytics<br/>• Student Preferences<br/>• Popular Domains<br/>• Trend Analysis]
+    DomainActions --> AddDomains[➕ Add New Domains<br/>Emerging Technologies<br/>Industry Demands]
+    DomainActions --> EditDomains[✏️ Edit Existing Domains<br/>Update Names<br/>Modify Descriptions]
+    DomainActions --> RemoveDomains[🗑️ Remove Obsolete Domains<br/>Archive Old Domains<br/>Clean Database]
+    DomainActions --> DomainAnalytics[📊 Domain Analytics<br/>Student Preferences<br/>Popular Domains<br/>Trend Analysis]
     
     %% Language Management
     LanguageManagement --> LanguageActions{Language Actions}
-    LanguageActions --> AddLanguages[➕ Add Programming Languages<br/>• New Technologies<br/>• Framework Support]
-    LanguageActions --> EditLanguages[✏️ Edit Language Names<br/>• Standardize Naming<br/>• Update Descriptions]
-    LanguageActions --> RemoveLanguages[🗑️ Remove Languages<br/>• Deprecated Technologies<br/>• Database Cleanup]
-    LanguageActions --> LanguageStats[📊 Language Statistics<br/>• Usage Patterns<br/>• Student Skills<br/>• Market Demand]
+    LanguageActions --> AddLanguages[➕ Add Programming Languages<br/>New Technologies<br/>Framework Support]
+    LanguageActions --> EditLanguages[✏️ Edit Language Names<br/>Standardize Naming<br/>Update Descriptions]
+    LanguageActions --> RemoveLanguages[🗑️ Remove Languages<br/>Deprecated Technologies<br/>Database Cleanup]
+    LanguageActions --> LanguageStats[📊 Language Statistics<br/>Usage Patterns<br/>Student Skills<br/>Market Demand]
     
     %% System Settings
     SystemSettings --> SettingsOptions{System Configuration}
-    SettingsOptions --> GlobalSettings[🌐 Global Settings<br/>• Site Configuration<br/>• Default Values<br/>• System Preferences]
-    SettingsOptions --> SecuritySettings[🔒 Security Configuration<br/>• Password Policies<br/>• Access Controls<br/>• Session Management]
-    SettingsOptions --> EmailSettings[📧 Email Configuration<br/>• SMTP Settings<br/>• Notification Templates<br/>• Bulk Email Setup]
-    SettingsOptions --> FileSettings[📁 File Management<br/>• Upload Limits<br/>• Storage Configuration<br/>• File Type Restrictions]
+    SettingsOptions --> GlobalSettings[🌐 Global Settings<br/>Site Configuration<br/>Default Values<br/>System Preferences]
+    SettingsOptions --> SecuritySettings[🔒 Security Configuration<br/>Password Policies<br/>Access Controls<br/>Session Management]
+    SettingsOptions --> EmailSettings[📧 Email Configuration<br/>SMTP Settings<br/>Notification Templates<br/>Bulk Email Setup]
+    SettingsOptions --> FileSettings[📁 File Management<br/>Upload Limits<br/>Storage Configuration<br/>File Type Restrictions]
     
     %% Database Operations
     DatabaseOperations --> DBActions{Database Management}
-    DBActions --> BackupDB[💾 Database Backup<br/>• Regular Backups<br/>• Export Data<br/>• Version Control]
-    DBActions --> RestoreDB[🔄 Database Restore<br/>• Recovery Operations<br/>• Data Migration<br/>• Rollback Changes]
-    DBActions --> OptimizeDB[⚡ Database Optimization<br/>• Performance Tuning<br/>• Index Management<br/>• Query Optimization]
-    DBActions --> AnalyzeDB[📊 Database Analytics<br/>• Usage Statistics<br/>• Performance Metrics<br/>• Growth Tracking]
+    DBActions --> BackupDB[💾 Database Backup<br/>Regular Backups<br/>Export Data<br/>Version Control]
+    DBActions --> RestoreDB[🔄 Database Restore<br/>Recovery Operations<br/>Data Migration<br/>Rollback Changes]
+    DBActions --> OptimizeDB[⚡ Database Optimization<br/>Performance Tuning<br/>Index Management<br/>Query Optimization]
+    DBActions --> AnalyzeDB[📊 Database Analytics<br/>Usage Statistics<br/>Performance Metrics<br/>Growth Tracking]
     
     %% Advanced Admin Features
     AdminPanel --> AdvancedFeatures{Advanced Features}
-    AdvancedFeatures --> SystemMonitoring[📊 System Monitoring<br/>• Performance Metrics<br/>• Error Tracking<br/>• Usage Analytics]
-    AdvancedFeatures --> LogManagement[📝 Log Management<br/>• Access Logs<br/>• Error Logs<br/>• Audit Trails]
-    AdvancedFeatures --> MaintenanceMode[🔧 Maintenance Mode<br/>• System Updates<br/>• Scheduled Maintenance<br/>• Downtime Management]
-    AdvancedFeatures --> IntegrationManager[🔗 Integration Management<br/>• Third-party APIs<br/>• External Services<br/>• Data Synchronization]
+    AdvancedFeatures --> SystemMonitoring[📊 System Monitoring<br/>Performance Metrics<br/>Error Tracking<br/>Usage Analytics]
+    AdvancedFeatures --> LogManagement[📝 Log Management<br/>Access Logs<br/>Error Logs<br/>Audit Trails]
+    AdvancedFeatures --> MaintenanceMode[🔧 Maintenance Mode<br/>System Updates<br/>Scheduled Maintenance<br/>Downtime Management]
+    AdvancedFeatures --> IntegrationManager[🔗 Integration Management<br/>Third-party APIs<br/>External Services<br/>Data Synchronization]
     
     %% Reporting and Analytics
-    AdminPanel --> ReportingSystem{Reporting & Analytics}
-    ReportingSystem --> StudentReports[📈 Student Reports<br/>• Enrollment Statistics<br/>• Academic Performance<br/>• Placement Readiness]
-    ReportingSystem --> SystemReports[📊 System Reports<br/>• Usage Statistics<br/>• Performance Metrics<br/>• Error Analysis]
-    ReportingSystem --> CustomReports[📋 Custom Reports<br/>• Query Builder<br/>• Data Visualization<br/>• Export Options]
-    ReportingSystem --> DashboardMetrics[📊 Dashboard Metrics<br/>• Real-time Statistics<br/>• Key Performance Indicators<br/>• Trend Analysis]
+    AdminPanel --> ReportingSystem{Reporting and Analytics}
+    ReportingSystem --> StudentReports[📈 Student Reports<br/>Enrollment Statistics<br/>Academic Performance<br/>Placement Readiness]
+    ReportingSystem --> SystemReports[📊 System Reports<br/>Usage Statistics<br/>Performance Metrics<br/>Error Analysis]
+    ReportingSystem --> CustomReports[📋 Custom Reports<br/>Query Builder<br/>Data Visualization<br/>Export Options]
+    ReportingSystem --> DashboardMetrics[📊 Dashboard Metrics<br/>Real-time Statistics<br/>Key Performance Indicators<br/>Trend Analysis]
     
     %% Styling
     classDef admin fill:#e8eaf6,stroke:#3f51b5,stroke-width:3px
